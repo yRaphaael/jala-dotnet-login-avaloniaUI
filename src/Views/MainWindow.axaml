@@ -1,0 +1,74 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Assignment3.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Assignment3.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Assignment3">
+
+    <!-- Set the DataContext for the previewer in an IDE -->
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <!-- Define Window styles -->
+    <Window.Styles>
+        <!-- Style for the title -->
+        <Style Selector="TextBlock.Title">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <!-- Fluent theme -->
+        <FluentTheme />
+        <!-- Include Fluent theme for DataGrid -->
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/> 
+    </Window.Styles>
+
+    <!-- DockPanel to hold content -->
+    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        <!-- StackPanel for registration form -->
+        <StackPanel DockPanel.Dock="Left" MinWidth="400" MaxWidth="500" Margin="10">
+            <!-- Title -->
+            <TextBlock HorizontalAlignment="Center" Classes="Title" Margin="0 0 0 20">
+                Register
+            </TextBlock>
+            <!-- Input fields -->
+            <TextBox x:Name="name" Watermark="Name" Margin="0 0 0 20"/>
+            <TextBox x:Name="surname" Watermark="Surname" Margin="0 0 0 20"/>
+            <TextBox x:Name="email" Watermark="Email" Margin="0 0 0 20"/>
+            <!-- Sign up button -->
+            <Button Click="Handle" HorizontalAlignment="Center" Padding="100 10 100 10" Margin="0 0 0 20">
+                Sign up
+            </Button>
+            <!-- Success and error labels -->
+            <TextBlock x:Name="successLabel" HorizontalAlignment="Center" Foreground="Green" Margin="0 30 0 0" IsVisible="False"/>
+            <TextBlock x:Name="errorLabel" HorizontalAlignment="Center" Foreground="Red" Margin="0 30 0 0" IsVisible="False"/>
+        </StackPanel>
+
+        <!-- StackPanel for user list and filtering -->
+        <StackPanel DockPanel.Dock="Right" MinWidth="300" MaxWidth="800" Margin="10">
+            <!-- Filter by email input -->
+            <TextBox x:Name="filterByEmail" Watermark="Filter by email" MaxWidth="600" KeyUp="FilterTextUpdate"/>
+            <!-- DataGrid to display users -->
+            <DataGrid Margin="20 8 20 20" ItemsSource="{Binding Users}" IsReadOnly="True"
+                      CanUserReorderColumns="True" CanUserResizeColumns="True" CanUserSortColumns="True"
+                      GridLinesVisibility="All" BorderThickness="1" BorderBrush="Gray"
+                      MinHeight="400" MinWidth="600" MaxWidth="700" MaxHeight="500">
+                <DataGrid.Columns>
+                    <!-- Columns -->
+                    <DataGridTextColumn Header="First Name" MinWidth="200" Binding="{Binding Name}"/>
+                    <DataGridTextColumn Header="Surname" MinWidth="200" Binding="{Binding Surname}"/>
+                    <DataGridTextColumn Header="Email" MinWidth="200" Binding="{Binding Email}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <!-- TextBlock to display user count -->
+            <TextBlock HorizontalAlignment="Center">
+                Users count: <TextBlock HorizontalAlignment="Center" Foreground="Green" Text="{Binding Users.Count}"/>
+            </TextBlock>
+        </StackPanel>
+    </DockPanel>
+</Window>
